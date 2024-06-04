@@ -11,10 +11,36 @@ For starting the application:
 make start
 ```
 
+App will be available on http://localhost
+
 ## Usage
+Use following command to access the php container:
+```bash
+make terminal
+```
+
+To run the import process use:
+```bash
+composer import
+```
+or:
+```bash
+bin/console app:logs:import ./data/sample.log
+```
+
+Also, you can use delete and count endpoints from you API doc.
+
+GET http://localhost/count?serviceNames[]=USER-SERVICE&serviceNames[]=INVOICE-SERVICE&statusCode=201&startDate=2017-09-09&endDate=2018-09-09
+
+DELETE http://localhost/delete
 
 ## Developer notes
 It will be better to use column-based database for performance purposes with aggregation on a big datasets like ClickHouse or Cassandra.
+Also for better performance there is better to use flat table to avoid joins.
+
+In a code you will see 2 implementations of parsing mechanism, one based on regex, another on working with strings in php. Option with php strings works faster:)
+
+Most of the classes in a code will have prefix "final" to avoid inheritance and use composition.
 
 ## Task
 
@@ -31,8 +57,7 @@ Now we are planning to have a new project to display a dashboard but in order to
             ii. statusCode
             iii. startDate
             iv. endDate
-        b. Endpoint result:
-
+        b. Endpoint result: {"counter":1}
 
 Please see the attached api.yaml (OpenAPI specs) for more information.
 ### Notes:

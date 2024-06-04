@@ -20,5 +20,31 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Service\LogImporter\LogImporterService:
+        class: App\Service\LogImporter\LogImporterService
+        arguments:
+            $batchSize: '%env(int:LOG_SAVING_BATCH_SIZE)%'
+
+    App\Service\LogImporter\ParsingStrategy\ParserStrategyInterface:
+        class: App\Service\LogImporter\ParsingStrategy\SubStringParserStrategy
+#        class: App\Service\LogImporter\ParsingStrategy\RegexParserStrategy
+
+    App\Service\LogImporter\Transformer\LogTransformer:
+        arguments:
+            $logger: '@console.logger'
+
+    App\Service\LogImporter\Filter\LogFilterIterator:
+        arguments:
+            $logger: '@console.logger'
+
+    console.logger:
+        class: Symfony\Component\Console\Logger\ConsoleLogger
+        arguments:
+            $output: '@console.output'
+
+    console.output:
+        class: Symfony\Component\Console\Output\ConsoleOutput
+
+
+    App\EventListener\ExceptionListener:
+        tags: [ kernel.event_listener ]

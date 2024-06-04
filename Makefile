@@ -1,9 +1,10 @@
+
 install: install-env \
 	install-docker-override \
 	install-php-xdebug-ini \
 	install-docker-php-fpm \
 	install-php-composer-packages \
-	install-docker-mysql \
+	install-docker-postgres \
 	start
 
 install-env:
@@ -25,7 +26,7 @@ install-docker-php-fpm:
 install-php-composer-packages:
 	cd docker && docker compose run --rm -T php-fpm composer install
 
-install-docker-mysql:
+install-docker-postgres:
 	cd docker && \
 	docker compose up -d postgres && \
 	docker run --rm --network parser_net jwilder/dockerize -wait tcp://postgres:5432 -timeout 30s
@@ -36,8 +37,7 @@ clean:
 
 start:
 	cd docker && docker compose up -d
-	@echo "Open http://localhost"
+	@echo "Open http://127.0.0.1"
 
 terminal:
 	cd docker && docker compose exec -it php-fpm bash
-

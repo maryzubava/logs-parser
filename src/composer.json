@@ -10,16 +10,27 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.15",
+        "phpdocumentor/reflection-docblock": "^5.4",
+        "phpstan/phpdoc-parser": "^1.29",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.3.*",
         "symfony/maker-bundle": "^1.49",
+        "symfony/property-access": "6.3.*",
+        "symfony/property-info": "6.3.*",
         "symfony/runtime": "6.3.*",
+        "symfony/serializer": "6.3.*",
         "symfony/yaml": "6.3.*"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest"
+        "friendsofphp/php-cs-fixer": "^3.58",
+        "phpstan/phpstan": "^1.11",
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "symfony/browser-kit": "6.3.*",
+        "symfony/css-selector": "6.3.*",
+        "symfony/phpunit-bridge": "^7.1"
     },
     "config": {
         "allow-plugins": {
@@ -58,7 +69,18 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "style-fix": "XDEBUG_MODE=off php-cs-fixer fix -v --show-progress=dots --config=.php-cs-fixer.php",
+        "static-analyze": "XDEBUG_MODE=off phpstan",
+        "test": "XDEBUG_MODE=off phpunit",
+        "test-coverage": "XDEBUG_MODE=coverage phpunit --coverage-html ./coverage/html  --coverage-xml ./coverage/xml",
+        "test-failed": "XDEBUG_MODE=off phpunit --order-by defects --stop-on-defect --stop-on-error --stop-on-failure",
+        "qa": [
+            "@style-fix",
+            "@static-analyze",
+            "@test"
+        ],
+        "import" : "XDEBUG_MODE=off bin/console app:logs:import ./data/sample.log"
     },
     "conflict": {
         "symfony/symfony": "*"

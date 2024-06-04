@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 ARG HOST_UID=1000
 
@@ -11,8 +11,7 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS shadow \
       linux-headers \
       libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
+    && pecl install xdebug && docker-php-ext-enable xdebug \
     && usermod -u "${HOST_UID}" www-data \
     && groupmod -g "${HOST_UID}" www-data  \
     && docker-install-composer \

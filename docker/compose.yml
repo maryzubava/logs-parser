@@ -14,7 +14,6 @@ services:
       context: ./php-fpm
       dockerfile: ./Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}_php_fpm
-    user: www-data
     volumes:
       - ../src:/app
     working_dir: /app
